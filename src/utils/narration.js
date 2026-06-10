@@ -69,6 +69,22 @@ export const simulateIntroNarration = () => [
   instruct("Complete all three stations to earn your badge.")
 ];
 
+export const simulateStationANarration = () => [
+  instruct("Drag the glowing dot to the round number that this number is closest to."),
+  say("Remember — look at which big number it's nearest to on the number line!")
+];
+
+export const simulateStationBNarration = () => [
+  instruct("Look at this problem. Round the numbers in your head, then choose the best estimate from the four choices."),
+  cheer("Watch the Estimate-O-Meter!")
+];
+
+export const simulateStationCNarration = () => [
+  cheer("Time to build your own estimate!"),
+  instruct("First, round each number. Then add or subtract."),
+  say("You're thinking like a real mathematician!")
+];
+
 export const playIntroNarration = () => [
   say("Welcome to IntelliPlay!"),
   instruct("Complete all 10 worlds by solving estimation challenges."),

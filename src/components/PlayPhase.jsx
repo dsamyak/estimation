@@ -15,7 +15,8 @@ const WORLDS = [
   { id: 10, name: "Grand Finale", icon: "🎉", unlocked: false },
 ];
 
-// Reusing FeedbackOverlay from SimulatePhase logic for consistency
+const CHARACTERS = ["John", "Sarah", "Mike", "Emma", "Arjun", "Lena", "Sofia", "Tomás", "Mei", "Priya"];
+
 const FeedbackOverlay = ({ isCorrect, message, subMessage, onContinue }) => (
   <div className="feedback-overlay" onClick={onContinue}>
     <div className={`feedback-content ${isCorrect ? 'correct' : 'wrong'}`}>
@@ -41,9 +42,17 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [question, setQuestion] = useState(null);
-  const [feedback, setFeedback] = useState(null); // 'correct', 'wrong', 'world_complete'
+  const [feedback, setFeedback] = useState(null); 
   
+  // Input for FILL_BLANK
+  const [inputValue, setInputValue] = useState('');
+
   const narrationRef = useRef(null);
+  const lastChar = useRef('');
+  const lastType = useRef(-1);
+
+  // Keep track of which question types we've shown in this world to ensure all 10 types appear
+  const [worldTypes, setWorldTypes] = useState([0,1,2,3,4,5,6,7,8,9]);
 
   useEffect(() => {
     if (audioEnabled && !currentWorld && xp === 0) {
@@ -56,50 +65,147 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
   }, [audioEnabled, currentWorld, xp]);
 
   const generateQuestion = useCallback(() => {
-    // Generate an estimation question
-    const num1 = Math.floor(Math.random() * 800) + 100;
-    const num2 = Math.floor(Math.random() * 800) + 100;
-    const isAddition = Math.random() > 0.5;
+    if (worldTypes.length === 0) return;
+    
+    // Pick a random type from the remaining types for this world
+    const typeIndex = Math.floor(Math.random() * worldTypes.length);
+    const qTypeIndex = worldTypes[typeIndex];
+    
+    // Remove the chosen type from the pool
+    setWorldTypes(prev => prev.filter((_, i) => i !== typeIndex));
 
-    const rounded1 = Math.round(num1 / 100) * 100;
-    const rounded2 = Math.round(num2 / 100) * 100;
+    const types = ['R10', 'R100', 'SUM_MCQ', 'DIFF_MCQ', 'SUM_FILL', 'DIFF_FILL', 'WP_ADD', 'WP_SUB', 'REASON', 'OVER_UNDER'];
+    const qType = types[qTypeIndex];
 
-    let target, text;
-    if (isAddition) {
-      target = rounded1 + rounded2;
-      text = `Estimate the sum: ${num1} + ${num2} (round to nearest 100)`;
-    } else {
-      // Ensure num1 > num2
-      const max = Math.max(num1, num2);
-      const min = Math.min(num1, num2);
-      const rMax = Math.round(max / 100) * 100;
-      const rMin = Math.round(min / 100) * 100;
-      target = rMax - rMin;
-      text = `Estimate the difference: ${max} - ${min} (round to nearest 100)`;
+    let char = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+    if (lastChar.current === char) {
+      char = CHARACTERS[(CHARACTERS.indexOf(char) + 1) % CHARACTERS.length];
+    }
+    lastChar.current = char;
+
+    let q = {};
+    const n1_3d = Math.floor(Math.random() * 800) + 100;
+    const n2_3d = Math.floor(Math.random() * 800) + 100;
+    const n1_2d = Math.floor(Math.random() * 80) + 10;
+    const n2_2d = Math.floor(Math.random() * 80) + 10;
+
+    if (qType === 'R10') {
+      const num = n1_3d;
+      const target = Math.round(num / 10) * 10;
+      q = {
+        format: 'MCQ',
+        text: `${char} has ${num} items. Round ${num} to the nearest 10.`,
+        correct: target,
+        options: Array.from(new Set([target, target - 10, target + 10, target + 20])).sort(()=>Math.random()-0.5).slice(0, 4)
+      };
+    } else if (qType === 'R100') {
+      const num = n1_3d;
+      const target = Math.round(num / 100) * 100;
+      q = {
+        format: 'MCQ',
+        text: `Round ${num} to the nearest 100.`,
+        correct: target,
+        options: Array.from(new Set([target, target - 100, target + 100, target + 200])).sort(()=>Math.random()-0.5).slice(0, 4)
+      };
+    } else if (qType === 'SUM_MCQ') {
+      const target = Math.round(n1_3d/10)*10 + Math.round(n2_3d/10)*10;
+      q = {
+        format: 'MCQ',
+        text: `Estimate the sum of ${n1_3d} + ${n2_3d} (round to nearest 10).`,
+        correct: target,
+        options: Array.from(new Set([target, target - 10, target + 10, target + 20])).sort(()=>Math.random()-0.5).slice(0, 4)
+      };
+    } else if (qType === 'DIFF_MCQ') {
+      const max = Math.max(n1_3d, n2_3d);
+      const min = Math.min(n1_3d, n2_3d);
+      const target = Math.round(max/100)*100 - Math.round(min/100)*100;
+      q = {
+        format: 'MCQ',
+        text: `Estimate the difference: ${max} - ${min} (round to nearest 100).`,
+        correct: target,
+        options: Array.from(new Set([target, target - 100, target + 100, Math.abs(target - 200)])).sort(()=>Math.random()-0.5).slice(0, 4)
+      };
+    } else if (qType === 'SUM_FILL') {
+      const target = Math.round(n1_2d/10)*10 + Math.round(n2_2d/10)*10;
+      q = {
+        format: 'FILL_BLANK',
+        text: `Estimate the sum (nearest 10): ${n1_2d} + ${n2_2d} ≈ ?`,
+        correct: target,
+      };
+    } else if (qType === 'DIFF_FILL') {
+      const max = Math.max(n1_2d, n2_2d);
+      const min = Math.min(n1_2d, n2_2d);
+      const target = Math.round(max/10)*10 - Math.round(min/10)*10;
+      q = {
+        format: 'FILL_BLANK',
+        text: `Estimate the difference (nearest 10): ${max} - ${min} ≈ ?`,
+        correct: target,
+      };
+    } else if (qType === 'WP_ADD') {
+      const target = Math.round(n1_3d/100)*100 + Math.round(n2_3d/100)*100;
+      q = {
+        format: 'MCQ',
+        text: `${char} read ${n1_3d} pages in June and ${n2_3d} pages in July. About how many pages did they read in both months?`,
+        correct: target,
+        options: Array.from(new Set([target, target - 100, target + 100, target + 200])).sort(()=>Math.random()-0.5).slice(0, 4)
+      };
+    } else if (qType === 'WP_SUB') {
+      const max = Math.max(n1_3d, n2_3d);
+      const min = Math.min(n1_3d, n2_3d);
+      const target = Math.round(max/10)*10 - Math.round(min/10)*10;
+      q = {
+        format: 'MCQ',
+        text: `${char} has ${max} coins and spends ${min}. About how many coins are left?`,
+        correct: target,
+        options: Array.from(new Set([target, target - 10, target + 10, Math.abs(target - 20)])).sort(()=>Math.random()-0.5).slice(0, 4)
+      };
+    } else if (qType === 'REASON') {
+      const target = Math.round(n1_3d/100)*100 + Math.round(n2_3d/100)*100;
+      const isReasonable = Math.random() > 0.5;
+      const displayedEstimate = isReasonable ? target : target + 200;
+      q = {
+        format: 'YES_NO',
+        text: `${char} estimated ${n1_3d} + ${n2_3d} ≈ ${displayedEstimate}. Is this reasonable?`,
+        correct: isReasonable ? 'YES' : 'NO'
+      };
+    } else if (qType === 'OVER_UNDER') {
+      const num1 = n1_2d;
+      const num2 = n2_2d;
+      const r1 = Math.round(num1/10)*10;
+      const r2 = Math.round(num2/10)*10;
+      const exact = num1 + num2;
+      const est = r1 + r2;
+      let type = est > exact ? 'OVERESTIMATE' : (est < exact ? 'UNDERESTIMATE' : 'EXACT');
+      
+      if (type === 'EXACT') {
+        type = 'OVERESTIMATE';
+      }
+      
+      q = {
+        format: 'OVER_UNDER',
+        text: `${char} estimated ${num1} + ${num2} ≈ ${est + (type==='EXACT'?10:0)}. Is this an overestimate or underestimate?`,
+        correct: type,
+        options: ['OVERESTIMATE', 'UNDERESTIMATE']
+      };
     }
 
-    const distractors = [
-      target + 100,
-      Math.abs(target - 100),
-      target + 200
-    ];
-
-    const options = [target, ...distractors].sort(() => Math.random() - 0.5);
-
-    setQuestion({ text, options, correct: target, exact: target });
+    setQuestion(q);
+    setInputValue('');
     setFeedback(null);
-  }, []);
+  }, [worldTypes]);
 
   useEffect(() => {
-    if (currentWorld && !feedback) {
+    if (currentWorld && !feedback && !question) {
       generateQuestion();
     }
-  }, [currentWorld, questionIndex, generateQuestion, feedback]);
+  }, [currentWorld, questionIndex, generateQuestion, feedback, question]);
 
-  const handleAnswer = (opt) => {
+  const handleAnswer = (val) => {
     if (feedback) return;
     
-    const isCorrect = opt === question.correct;
+    // Allow case-insensitive or numeric checks
+    const isCorrect = String(val).trim().toUpperCase() === String(question.correct).trim().toUpperCase();
+    
     if (isCorrect) {
       sounds.correct();
       setScore(s => s + 1);
@@ -107,6 +213,7 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
       setStreak(s => {
         const newStreak = s + 1;
         if (newStreak > bestStreak) setBestStreak(newStreak);
+        if (newStreak === 10 && !badges.includes('Streak Champion')) setBadges(b => [...b, 'Streak Champion']);
         if (newStreak % 5 === 0) sounds.streak();
         return newStreak;
       });
@@ -121,9 +228,9 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
   const nextQuestion = () => {
     if (questionIndex < 9) {
       setQuestionIndex(i => i + 1);
+      setQuestion(null);
       setFeedback(null);
     } else {
-      // World complete
       let stars = 0;
       if (score >= 6) stars = 1;
       if (score >= 8) stars = 2;
@@ -145,10 +252,18 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
     if (currentWorld.id === 10 && score >= 6) {
       if (!badges.includes('Estimation Master')) setBadges(b => [...b, 'Estimation Master']);
     }
+    
+    const threeStarCount = worlds.filter(w => w.stars === 3).length + (score === 10 ? 1 : 0);
+    if (threeStarCount >= 5 && !badges.includes('3-Star Superstar')) setBadges(b => [...b, '3-Star Superstar']);
+    
+    if (currentWorld.id === 10 && !badges.includes('Global Estimator')) setBadges(b => [...b, 'Global Estimator']);
+
     setCurrentWorld(null);
     setQuestionIndex(0);
     setScore(0);
     setFeedback(null);
+    setQuestion(null);
+    setWorldTypes([0,1,2,3,4,5,6,7,8,9]); // Reset types for the next world
   };
 
   const handleFinish = () => {
@@ -204,7 +319,6 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
     );
   }
 
-  // Inside a world
   return (
     <div className="play-phase" style={{justifyContent: 'center'}}>
       <div className="play-world-badge" style={{background: 'var(--purple-light)', marginBottom: '1rem'}}>
@@ -219,17 +333,59 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
         <div className="glass-card max-w-md w-full text-center" style={{ animation: 'bounceIn 0.4s ease' }}>
           <h3 className="text-white text-xl mb-6 font-bold">{question.text}</h3>
           
-          <div className="options-grid">
-            {question.options.map(opt => (
+          {question.format === 'MCQ' && (
+            <div className="options-grid">
+              {question.options.map(opt => (
+                <button 
+                  key={opt}
+                  className="option-btn"
+                  onClick={() => handleAnswer(opt)}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {question.format === 'YES_NO' && (
+            <div className="options-grid">
+              <button className="option-btn" onClick={() => handleAnswer('YES')}>YES</button>
+              <button className="option-btn" onClick={() => handleAnswer('NO')}>NO</button>
+            </div>
+          )}
+
+          {question.format === 'OVER_UNDER' && (
+            <div className="options-grid">
+              {question.options.map(opt => (
+                <button key={opt} className="option-btn" onClick={() => handleAnswer(opt)} style={{fontSize: '1rem'}}>
+                  {opt}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {question.format === 'FILL_BLANK' && (
+            <div className="flex flex-col items-center gap-4">
+              <input 
+                type="number"
+                className="blank-input text-center text-white"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                style={{width: '120px', height: '60px', fontSize: '2rem'}}
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && inputValue !== '') handleAnswer(inputValue);
+                }}
+              />
               <button 
-                key={opt}
-                className="option-btn"
-                onClick={() => handleAnswer(opt)}
+                className="btn btn-primary mt-2" 
+                onClick={() => handleAnswer(inputValue)}
+                disabled={inputValue === ''}
               >
-                {opt}
+                Submit
               </button>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       )}
 
