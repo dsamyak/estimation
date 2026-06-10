@@ -9,7 +9,7 @@ const STORY_PANELS = [
   {
     title: "The Great Market Day Mix-Up",
     text: "John and Sarah are helping at Mike's fruit stall at the Saturday market. It's busy and there's no time to use paper and pencil!\n\nMike needs to know fast: 'I sold 318 mangoes yesterday and 253 today. About how many total?'",
-    emoji: "🥭",
+    image: "/images/story_p1.png",
     highlight: "318 + 253 = ?",
     narration: storyNarrationP1,
     bgColor: "linear-gradient(135deg, #1e3a8a, #4c1d95)",
@@ -17,8 +17,8 @@ const STORY_PANELS = [
   },
   {
     title: "Introducing Rounding",
-    text: "Sarah whispers to John: 'Remember what Emma taught us? Round first!'\n\n318 is close to 300. 253 is close to 250.",
-    emoji: "📏",
+    text: "Sarah whispers to John: 'Remember what Emma taught us? Round first!'\n\n318 is close to 300. 253 is close to 250.\n\nLook at the number line — 318 is closer to 300 than to 350. So we round DOWN!",
+    image: "/images/story_p2.png",
     highlight: "ROUND DOWN ↓",
     narration: storyNarrationP2,
     bgColor: "linear-gradient(135deg, #064e3b, #065f46)",
@@ -27,8 +27,8 @@ const STORY_PANELS = [
   {
     title: "Estimation in Action",
     text: "'300 + 250 = 550! Mike sold about 550 mangoes total!' 🎉\n\nThe exact answer? 318 + 253 = 571. Their estimate 550 is very close!",
-    emoji: "💡",
-    highlight: "Estimate: 550 | Exact: 571",
+    image: "/images/story_p3.png",
+    highlight: "Estimate: 550 | Exact: 571 | Difference: only 21!",
     narration: storyNarrationP3,
     bgColor: "linear-gradient(135deg, #78350f, #9a3412)",
     mascotMsg: "That's the power of estimation!"
@@ -36,26 +36,26 @@ const STORY_PANELS = [
   {
     title: "Subtraction Estimation",
     text: "Now Sarah has a problem: John brought 462 flyers. They gave out 179. About how many flyers are LEFT?\n\n'462 rounds to 500. 179 rounds to 200. So... 500 − 200 = 300!'",
-    emoji: "📄",
-    highlight: "ROUND UP ↑",
+    image: "/images/story_p4.png",
+    highlight: "ROUND UP ↑  |  ESTIMATE DIFFERENCE",
     narration: storyNarrationP4,
     bgColor: "linear-gradient(135deg, #1e3a8a, #0369a1)",
     mascotMsg: "Round and subtract!"
   },
   {
     title: "Real Life Check",
-    text: "'The exact answer is 462 − 179 = 283. Our estimate was 300. How close is that? Pretty good!'\n\nSarah: 'Estimation isn't about being perfect — it's about being SMART!'",
-    emoji: "🌍",
-    highlight: "Estimators use this trick everywhere!",
+    text: "'The exact answer is 462 − 179 = 283. Our estimate was 300. How close is that? Pretty good!'\n\nSarah: 'Estimation isn't about being perfect — it's about being SMART!'\n\nEstimators use this trick everywhere — in markets, airports, classrooms, and kitchens all over the world!",
+    image: "/images/story_p5.png",
+    highlight: "Estimation = Being SMART, not perfect!",
     narration: storyNarrationP5,
     bgColor: "linear-gradient(135deg, #4c1d95, #86198f)",
     mascotMsg: "Smart math for the real world!"
   },
   {
-    title: "Summary (CPA Bridge)",
-    text: "STEP 1: ROUND each number\nSTEP 2: ADD or SUBTRACT\nSTEP 3: CHECK reasonableness",
-    emoji: "✅",
-    highlight: "Is 70 close to 71? YES!",
+    title: "The 3-Step Secret",
+    text: "STEP 1: ROUND each number  →  48 ≈ 50,  23 ≈ 20\nSTEP 2: ADD or SUBTRACT      →  50 + 20 = 70\nSTEP 3: CHECK reasonableness  →  Is 70 close to 71? YES! ✅",
+    image: "/images/story_p6.png",
+    highlight: "Round → Operate → Check ✅",
     narration: storyNarrationP6,
     bgColor: "linear-gradient(135deg, #0f766e, #047857)",
     mascotMsg: "You've got the secret! Now let's try it yourself!"
@@ -131,10 +131,20 @@ export default function StoryPhase({ onComplete, audioEnabled }) {
       {/* Main Story Card */}
       <div className={`story-card ${animState === 'flipping' ? 'flipping' : ''}`}>
         
-        <div className="story-image-section" style={{ background: panel.bgColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ fontSize: '6rem', transform: animState === 'entering' ? 'scale(0)' : 'scale(1)', transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }}>
-            {panel.emoji}
-          </div>
+        <div className="story-image-section" style={{ background: panel.bgColor, position: 'relative', overflow: 'hidden' }}>
+          <img 
+            src={panel.image}
+            alt={panel.title}
+            className="story-image"
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'cover',
+              opacity: animState === 'entering' ? 0 : 1,
+              transform: animState === 'entering' ? 'scale(1.1)' : 'scale(1)',
+              transition: 'opacity 0.8s ease, transform 0.8s ease'
+            }}
+          />
           <div className="story-image-overlay" />
         </div>
 
