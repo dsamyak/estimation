@@ -72,8 +72,8 @@ export default function WonderPhase({ onComplete, audioEnabled }) {
 
         {/* Mascot reaction */}
         <div className={`mascot-container wonder-mascot ${step >= 1 ? 'visible' : ''}`}>
-          <div className="mascot thinking" style={{ width: 60, height: 60, fontSize: '1.8rem' }}>🤔</div>
-          <div className="speech-bubble wonder-bubble text-md text-bold text-blue-deep">
+          <div className="mascot thinking" style={{ width: 60, height: 60, fontSize: '1.8rem', flexShrink: 0 }}>🤔</div>
+          <div className="speech-bubble wonder-bubble" style={{ color: '#1a1a2e', fontSize: '1.05rem', maxWidth: 260 }}>
             Look at this scenario! Can you guess the answer?
           </div>
         </div>
@@ -81,31 +81,31 @@ export default function WonderPhase({ onComplete, audioEnabled }) {
         {/* Question Card */}
         <div className={`wonder-question-card ${step >= 1 ? 'visible' : ''}`}>
           <div className="wonder-emoji">📚</div>
-          <h2 className="wonder-question-text text-display text-xl high-contrast-text">
+          <h2 className="wonder-question-text" style={{ fontSize: '1.6rem' }}>
             Sarah has 247 coins. A book costs 189 coins.<br/>
             Does she have enough?
           </h2>
-          <p className="wonder-subtext text-lg text-bold text-white mb-4" style={{lineHeight: 1.5}}>
+          <p className="wonder-subtext text-bold text-white" style={{ fontSize: '1.1rem', lineHeight: 1.5, marginBottom: 16 }}>
             "About 250 minus about 190... that's about 60! Yes!"
           </p>
 
-          <div className="wonder-question-text text-display text-xl high-contrast-text text-gold" style={{marginTop: '16px'}}>
+          <div className="wonder-question-text text-gold" style={{ fontSize: '1.5rem', marginTop: 16 }}>
             Is 247 close to 250?
           </div>
 
           {step < 2 ? (
-            <div className="options-grid mt-4">
-              <button className="option-btn text-display text-xl high-contrast-text" onClick={() => handleAnswer(true)}>
+            <div className="options-grid" style={{ marginTop: 24 }}>
+              <button className="option-btn" onClick={() => handleAnswer(true)}>
                 Yes!
               </button>
-              <button className="option-btn text-display text-xl high-contrast-text" onClick={() => handleAnswer(false)}>
+              <button className="option-btn" onClick={() => handleAnswer(false)}>
                 No
               </button>
             </div>
           ) : (
-            <div className="mt-4" style={{ animation: 'bounceIn 0.5s ease' }}>
-              <div className="text-green text-display text-xl mb-2 high-contrast-text">You're already thinking like an estimator!</div>
-              <p className="text-lg text-bold text-white">Let's learn how to make smart guesses.</p>
+            <div style={{ marginTop: 24, animation: 'bounceIn 0.5s ease' }}>
+              <div className="text-display" style={{ color: 'var(--green-light)', fontSize: '1.4rem', marginBottom: 8, fontWeight: 700 }}>You're already thinking like an estimator!</div>
+              <p className="text-bold text-white" style={{ fontSize: '1.1rem' }}>Let's learn how to make smart guesses.</p>
             </div>
           )}
         </div>
