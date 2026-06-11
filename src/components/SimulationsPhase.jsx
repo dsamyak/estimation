@@ -582,7 +582,7 @@ const TreasureMap = ({ onComplete }) => {
       </p>
 
       {/* ── MAP GRID ── */}
-      <div style={{
+      <div className="treasure-map-container" style={{
         position: 'relative',
         width: MAP_COLS * CELL, height: MAP_ROWS * CELL,
         margin: '0 auto 12px',
