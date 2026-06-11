@@ -7,32 +7,32 @@ import { playIntroNarration } from '../utils/narration';
 // ═══════════════════════════════════════════════════════════════
 
 const WORLD_DATA = [
-  { id: 1,  name: 'School Supplies', icon: '✏️',  unlocked: true,  color: '#5c8fff', glow: 'rgba(92,143,255,0.35)',  gradient: 'linear-gradient(135deg,#1a237e,#3f51b5)', items: ['pencils','erasers','notebooks','crayons','rulers','stickers'] },
-  { id: 2,  name: 'Fruit Market',    icon: '🍎',  unlocked: false, color: '#ff7043', glow: 'rgba(255,112,67,0.35)',  gradient: 'linear-gradient(135deg,#bf360c,#ff5722)', items: ['apples','mangoes','bananas','oranges','grapes','papayas'] },
-  { id: 3,  name: 'Train Journey',   icon: '🚂',  unlocked: false, color: '#78909c', glow: 'rgba(120,144,156,0.35)', gradient: 'linear-gradient(135deg,#263238,#546e7a)', items: ['passengers','tickets','bags','seats','packages'] },
-  { id: 4,  name: 'Beach Day',       icon: '🏖️', unlocked: false, color: '#00bcd4', glow: 'rgba(0,188,212,0.35)',   gradient: 'linear-gradient(135deg,#006064,#0097a7)', items: ['seashells','pebbles','fish','starfish','crabs'] },
-  { id: 5,  name: 'Art Class',       icon: '🎨',  unlocked: false, color: '#e040fb', glow: 'rgba(224,64,251,0.35)', gradient: 'linear-gradient(135deg,#6a1b9a,#ab47bc)', items: ['paint tubes','brushes','sketches','colour pencils','canvases'] },
-  { id: 6,  name: 'Sports Stadium',  icon: '🏟️', unlocked: false, color: '#ef5350', glow: 'rgba(239,83,80,0.35)',   gradient: 'linear-gradient(135deg,#b71c1c,#e53935)', items: ['fans','tickets','goals','jerseys','balls'] },
-  { id: 7,  name: 'World Travel',    icon: '🌍',  unlocked: false, color: '#66bb6a', glow: 'rgba(102,187,106,0.35)',gradient: 'linear-gradient(135deg,#1b5e20,#388e3c)', items: ['souvenirs','photos','stamps','coins','miles'] },
-  { id: 8,  name: 'Pizza Party',     icon: '🍕',  unlocked: false, color: '#ffa726', glow: 'rgba(255,167,38,0.35)', gradient: 'linear-gradient(135deg,#e65100,#fb8c00)', items: ['pizza slices','guests','toppings','drinks','balloons'] },
-  { id: 9,  name: 'Space Mission',   icon: '🚀',  unlocked: false, color: '#7c4dff', glow: 'rgba(124,77,255,0.35)', gradient: 'linear-gradient(135deg,#1a237e,#4527a0)', items: ['stars','asteroids','satellites','fuel cans','space rocks'] },
-  { id: 10, name: 'Grand Finale',    icon: '🎉',  unlocked: false, color: '#ffd700', glow: 'rgba(255,215,0,0.45)',  gradient: 'linear-gradient(135deg,#f57f17,#ffc107)', items: ['trophies','medals','prizes','points','confetti bags'] },
+  { id: 1, name: 'School Supplies', icon: '✏️', unlocked: true, color: '#5c8fff', glow: 'rgba(92,143,255,0.35)', gradient: 'linear-gradient(135deg,#1a237e,#3f51b5)', items: ['pencils', 'erasers', 'notebooks', 'crayons', 'rulers', 'stickers'] },
+  { id: 2, name: 'Fruit Market', icon: '🍎', unlocked: false, color: '#ff7043', glow: 'rgba(255,112,67,0.35)', gradient: 'linear-gradient(135deg,#bf360c,#ff5722)', items: ['apples', 'mangoes', 'bananas', 'oranges', 'grapes', 'papayas'] },
+  { id: 3, name: 'Train Journey', icon: '🚂', unlocked: false, color: '#78909c', glow: 'rgba(120,144,156,0.35)', gradient: 'linear-gradient(135deg,#263238,#546e7a)', items: ['passengers', 'tickets', 'bags', 'seats', 'packages'] },
+  { id: 4, name: 'Beach Day', icon: '🏖️', unlocked: false, color: '#00bcd4', glow: 'rgba(0,188,212,0.35)', gradient: 'linear-gradient(135deg,#006064,#0097a7)', items: ['seashells', 'pebbles', 'fish', 'starfish', 'crabs'] },
+  { id: 5, name: 'Art Class', icon: '🎨', unlocked: false, color: '#e040fb', glow: 'rgba(224,64,251,0.35)', gradient: 'linear-gradient(135deg,#6a1b9a,#ab47bc)', items: ['paint tubes', 'brushes', 'sketches', 'colour pencils', 'canvases'] },
+  { id: 6, name: 'Sports Stadium', icon: '🏟️', unlocked: false, color: '#ef5350', glow: 'rgba(239,83,80,0.35)', gradient: 'linear-gradient(135deg,#b71c1c,#e53935)', items: ['fans', 'tickets', 'goals', 'jerseys', 'balls'] },
+  { id: 7, name: 'World Travel', icon: '🌍', unlocked: false, color: '#66bb6a', glow: 'rgba(102,187,106,0.35)', gradient: 'linear-gradient(135deg,#1b5e20,#388e3c)', items: ['souvenirs', 'photos', 'stamps', 'coins', 'miles'] },
+  { id: 8, name: 'Pizza Party', icon: '🍕', unlocked: false, color: '#ffa726', glow: 'rgba(255,167,38,0.35)', gradient: 'linear-gradient(135deg,#e65100,#fb8c00)', items: ['pizza slices', 'guests', 'toppings', 'drinks', 'balloons'] },
+  { id: 9, name: 'Space Mission', icon: '🚀', unlocked: false, color: '#7c4dff', glow: 'rgba(124,77,255,0.35)', gradient: 'linear-gradient(135deg,#1a237e,#4527a0)', items: ['stars', 'asteroids', 'satellites', 'fuel cans', 'space rocks'] },
+  { id: 10, name: 'Grand Finale', icon: '🎉', unlocked: false, color: '#ffd700', glow: 'rgba(255,215,0,0.45)', gradient: 'linear-gradient(135deg,#f57f17,#ffc107)', items: ['trophies', 'medals', 'prizes', 'points', 'confetti bags'] },
 ];
 
-const CHARACTERS = ['John','Sarah','Mike','Emma','Arjun','Lena','Sofia','Tomás','Mei','Priya'];
-const Q_TYPES    = ['R10','R100','SUM_MCQ','DIFF_MCQ','SUM_FILL','DIFF_FILL','WP_ADD','WP_SUB','REASON','OVER_UNDER'];
+const CHARACTERS = ['John', 'Sarah', 'Mike', 'Emma', 'Arjun', 'Lena', 'Sofia', 'Tomás', 'Mei', 'Priya'];
+const Q_TYPES = ['R10', 'R100', 'SUM_MCQ', 'DIFF_MCQ', 'SUM_FILL', 'DIFF_FILL', 'WP_ADD', 'WP_SUB', 'REASON', 'OVER_UNDER'];
 
-const CORRECT_MSGS = ['🎯 Spot on!','🌟 Brilliant!','✨ Perfect!','🏆 Nailed it!','🎉 Amazing!','🔥 Excellent!','💡 Great thinking!'];
-const WRONG_MSGS   = ['🤔 Not quite…','💪 Keep going!','📚 Almost there!','🧠 Good try!'];
+const CORRECT_MSGS = ['🎯 Spot on!', '🌟 Brilliant!', '✨ Perfect!', '🏆 Nailed it!', '🎉 Amazing!', '🔥 Excellent!', '💡 Great thinking!'];
+const WRONG_MSGS = ['🤔 Not quite…', '💪 Keep going!', '📚 Almost there!', '🧠 Good try!'];
 
 // ─── Pure helpers ────────────────────────────────────────────
-const pick   = arr => arr[Math.floor(Math.random() * arr.length)];
-const rnd    = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const rnd = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
 
 function makeOpts(nums) {
-  const pos    = nums.map(n => Math.max(0, n));
+  const pos = nums.map(n => Math.max(0, n));
   const unique = [...new Set(pos)];
-  let filler   = (unique[0] || 10) + 10;
+  let filler = (unique[0] || 10) + 10;
   while (unique.length < 4) { if (!unique.includes(filler)) unique.push(filler); filler += 10; }
   return unique.slice(0, 4).sort(() => Math.random() - 0.5);
 }
@@ -45,16 +45,16 @@ function buildQuestion(world) {
 }
 
 function buildQuestionOfType(qType, world) {
-  const item   = pick(world.items);
-  const char   = pick(CHARACTERS);
-  const n1_3d  = rnd(102, 898);
-  const n2_3d  = rnd(102, 898);
-  const n1_2d  = rnd(11, 89);
-  const n2_2d  = rnd(11, 89);
+  const item = pick(world.items);
+  const char = pick(CHARACTERS);
+  const n1_3d = rnd(102, 898);
+  const n2_3d = rnd(102, 898);
+  const n1_2d = rnd(11, 89);
+  const n2_2d = rnd(11, 89);
 
   switch (qType) {
     case 'R10': {
-      const num    = n1_3d;
+      const num = n1_3d;
       const target = Math.round(num / 10) * 10;
       return {
         format: 'MCQ', correct: target,
@@ -70,7 +70,7 @@ function buildQuestionOfType(qType, world) {
     }
 
     case 'R100': {
-      const num    = n1_3d;
+      const num = n1_3d;
       const target = Math.round(num / 100) * 100;
       return {
         format: 'MCQ', correct: target,
@@ -177,9 +177,9 @@ function buildQuestionOfType(qType, world) {
     }
 
     case 'REASON': {
-      const trueEst    = Math.round(n1_3d / 100) * 100 + Math.round(n2_3d / 100) * 100;
+      const trueEst = Math.round(n1_3d / 100) * 100 + Math.round(n2_3d / 100) * 100;
       const isReasonable = Math.random() > 0.5;
-      const badOffset  = (Math.random() > 0.5 ? 1 : -1) * rnd(200, 400);
+      const badOffset = (Math.random() > 0.5 ? 1 : -1) * rnd(200, 400);
       const displayEst = isReasonable ? trueEst : Math.max(100, trueEst + badOffset);
       return {
         format: 'YES_NO', correct: isReasonable ? 'YES' : 'NO',
@@ -194,10 +194,10 @@ function buildQuestionOfType(qType, world) {
     }
 
     case 'OVER_UNDER': {
-      const r1    = Math.round(n1_2d / 10) * 10;
-      const r2    = Math.round(n2_2d / 10) * 10;
+      const r1 = Math.round(n1_2d / 10) * 10;
+      const r2 = Math.round(n2_2d / 10) * 10;
       const exact = n1_2d + n2_2d;
-      const est   = r1 + r2;
+      const est = r1 + r2;
       // Ensure it's not exact
       const isOver = est >= exact;
       return {
@@ -259,28 +259,28 @@ const StarRow = ({ stars, animated }) => (
 // ═══════════════════════════════════════════════════════════════
 
 export default function PlayPhase({ onComplete, audioEnabled }) {
-  const [worlds, setWorlds]           = useState(() => WORLD_DATA.map(w => ({ ...w })));
+  const [worlds, setWorlds] = useState(() => WORLD_DATA.map(w => ({ ...w })));
   const [currentWorld, setCurrentWorld] = useState(null);
 
   // Stats
-  const [xp, setXp]               = useState(0);
-  const [streak, setStreak]        = useState(0);
+  const [xp, setXp] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
-  const [badges, setBadges]        = useState([]);
-  const [xpAnimKey, setXpAnimKey]  = useState(0);
-  const [showXP, setShowXP]        = useState(false);
+  const [badges, setBadges] = useState([]);
+  const [xpAnimKey, setXpAnimKey] = useState(0);
+  const [showXP, setShowXP] = useState(false);
 
   // Game state
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [score, setScore]                 = useState(0);
-  const [question, setQuestion]           = useState(null);
-  const [feedback, setFeedback]           = useState(null);
-  const [inputValue, setInputValue]       = useState('');
-  const [worldTypes, setWorldTypes]       = useState([...Q_TYPES]);
-  const [showHint, setShowHint]           = useState(false);
+  const [score, setScore] = useState(0);
+  const [question, setQuestion] = useState(null);
+  const [feedback, setFeedback] = useState(null);
+  const [inputValue, setInputValue] = useState('');
+  const [worldTypes, setWorldTypes] = useState([...Q_TYPES]);
+  const [showHint, setShowHint] = useState(false);
 
   const narrationRef = useRef(null);
-  const xpTimerRef   = useRef(null);
+  const xpTimerRef = useRef(null);
 
   // Intro narration
   useEffect(() => {
@@ -299,7 +299,7 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
     if (worldTypes.length === 0) { setWorldTypes([...Q_TYPES]); return; }
 
     // Pick from remaining types and remove it
-    const idx   = Math.floor(Math.random() * worldTypes.length);
+    const idx = Math.floor(Math.random() * worldTypes.length);
     const qType = worldTypes[idx];
     setWorldTypes(prev => prev.filter((_, i) => i !== idx));
 
@@ -361,7 +361,7 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
     if (threeStarCount >= 5 && !badges.includes('3-Star Superstar')) setBadges(b => [...b, '3-Star Superstar']);
     if (currentWorld.id === 10) {
       if (!badges.includes('Estimation Master')) setBadges(b => [...b, 'Estimation Master']);
-      if (!badges.includes('Global Estimator'))  setBadges(b => [...b, 'Global Estimator']);
+      if (!badges.includes('Global Estimator')) setBadges(b => [...b, 'Global Estimator']);
     }
     setCurrentWorld(null);
     setQuestionIndex(0);
@@ -425,7 +425,7 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
                 cursor: w.unlocked ? 'pointer' : 'not-allowed',
               }}
             >
-              <div className="world-icon" style={{fontSize: '2.5rem'}}>{w.unlocked ? w.icon : '🔒'}</div>
+              <div className="world-icon" style={{ fontSize: '2.5rem' }}>{w.unlocked ? w.icon : '🔒'}</div>
               <div className="world-name text-display text-bold text-md">{w.name}</div>
               {w.score !== undefined && (
                 <div className="world-stars mt-2">
@@ -467,7 +467,7 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
 
   // ─── QUESTION SCREEN ──────────────────────────────────────
   const progressPct = (questionIndex / 10) * 100;
-  const worldStars  = score >= 10 ? 3 : score >= 8 ? 2 : score >= 6 ? 1 : 0;
+  const worldStars = score >= 10 ? 3 : score >= 8 ? 2 : score >= 6 ? 1 : 0;
 
   return (
     <div className="play-phase" style={{ justifyContent: 'flex-start', paddingTop: 16 }}>
@@ -504,11 +504,11 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
             background: i < questionIndex
               ? currentWorld.color
               : i === questionIndex
-              ? 'var(--gold)'
-              : 'rgba(255,255,255,0.15)',
+                ? 'var(--gold)'
+                : 'rgba(255,255,255,0.15)',
             transition: 'all 0.3s ease',
             boxShadow: i === questionIndex ? `0 0 8px ${currentWorld.color}` : 'none',
-          }}/>
+          }} />
         ))}
       </div>
 
@@ -583,8 +583,10 @@ export default function PlayPhase({ onComplete, audioEnabled }) {
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && inputValue !== '' && handleAnswer(inputValue)}
-                style={{ width: 160, height: 80, textAlign: 'center', color: 'white',
-                  borderColor: currentWorld.color, boxShadow: `0 0 16px ${currentWorld.glow}` }}
+                style={{
+                  width: 160, height: 80, textAlign: 'center', color: 'white',
+                  borderColor: currentWorld.color, boxShadow: `0 0 16px ${currentWorld.glow}`
+                }}
                 autoFocus
                 placeholder="?"
               />

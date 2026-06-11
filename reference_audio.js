@@ -11,8 +11,12 @@ const elevenLabsCache = new Map();
 
 const ELEVENLABS_VOICE_ID = 'Xb7hH8MSUJpSbSDYk0k2';
 
-import { audioMap as importedAudioMap } from './audioMap.js';
-let audioMap = importedAudioMap || {};
+let audioMap = {};
+try {
+  import('./audioMap.js').then(module => {
+    audioMap = module.audioMap || {};
+  }).catch(() => {});
+} catch (e) { }
 
 const SPEECH_STYLES = {
   statement: { rate: 0.85, pitch: 1.18, volume: 0.95 },
@@ -61,7 +65,7 @@ export async function getAudioUrl(text, style) {
       body: JSON.stringify({ text, voiceId: ELEVENLABS_VOICE_ID, voiceSettings })
     });
 
-    let isHtmlFallback = (response.headers.get('content-type') || '').includes('text/html');
+    const isHtmlFallback = (response.headers.get('content-type') || '').includes('text/html');
 
     if ((!response.ok || isHtmlFallback) && localApiKey) {
       response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`, {
@@ -69,7 +73,6 @@ export async function getAudioUrl(text, style) {
         headers: { 'Content-Type': 'application/json', 'xi-api-key': localApiKey },
         body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: voiceSettings })
       });
-      isHtmlFallback = (response.headers.get('content-type') || '').includes('text/html');
     }
 
     if (!response.ok || isHtmlFallback) {
@@ -96,23 +99,17 @@ export function speak(text, enabled = true, style = 'statement') {
 
     try {
       const audioUrl = await getAudioUrl(text, style);
-      console.log(`[Audio Debug] Playing text: "${text}" | URL: ${audioUrl}`);
       if (currentPlayId !== playId) { isSpeaking = false; resolve(); return; }
 
       if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
 
       currentAudio = new Audio(audioUrl);
       currentAudio.onended = () => { isSpeaking = false; resolve(); };
-      currentAudio.onerror = (e) => { 
-        console.error(`[Audio Debug] Audio Element Error for URL ${audioUrl}:`, currentAudio.error);
-        isSpeaking = false; 
-        resolve(); 
-      };
-      
+      currentAudio.onerror = () => { isSpeaking = false; resolve(); };
       await currentAudio.play();
       return;
     } catch (error) {
-      console.error(`[Audio Debug] speak() caught error for text "${text}":`, error);
+      console.error("ElevenLabs failed, and fallback is disabled:", error);
       isSpeaking = false;
       resolve();
     }
@@ -124,14 +121,14 @@ export function seg(text, style = 'statement', pause = 400) {
   return { text, style, pause };
 }
 
-export const say = (text, p = 300) => seg(text, 'statement', p);
-export const ask = (text, p = 400) => seg(text, 'question', p);
-export const cheer = (text, p = 200) => seg(text, 'encouragement', p);
-export const emphasize = (text, p = 400) => seg(text, 'emphasis', p);
-export const think = (text, p = 500) => seg(text, 'thinking', p);
-export const celebrate = (text, p = 300) => seg(text, 'celebration', p);
-export const instruct = (text, p = 300) => seg(text, 'instruction', p);
-export const pause = (ms = 500) => seg('', 'statement', ms);
+export const say = (text, pause = 0) => seg(text, 'statement', pause);
+export const ask = (text, pause = 0) => seg(text, 'question', pause);
+export const cheer = (text, pause = 0) => seg(text, 'encouragement', pause);
+export const emphasize = (text, pause = 0) => seg(text, 'emphasis', pause);
+export const think = (text, pause = 0) => seg(text, 'thinking', pause);
+export const celebrate = (text, pause = 0) => seg(text, 'celebration', pause);
+export const instruct = (text, pause = 0) => seg(text, 'instruction', pause);
+export const pause = (ms = 0) => seg('', 'statement', ms);
 
 export function preloadNarration(segments) {
   if (!segments) return;
