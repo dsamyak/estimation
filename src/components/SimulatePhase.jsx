@@ -188,13 +188,7 @@ const StationA = ({ onComplete }) => {
       </p>
 
       {/* Big value display */}
-      <div style={{
-        textAlign: 'center', fontSize: '3.5rem', fontFamily: 'var(--font-display)',
-        color: 'var(--gold)', fontWeight: 700,
-        textShadow: '0 0 20px rgba(255,193,7,0.5)',
-        marginBottom: 24,
-        transition: 'all 0.1s ease',
-      }}>
+      <div className="station-value-display" style={{ transition: 'all 0.1s ease' }}>
         {value}
       </div>
 
@@ -327,11 +321,10 @@ const ALL_B_ROUNDS = [
 ];
 
 // Animated semicircle gauge
-const GaugeMeter = ({ value, maxValue, color }) => {
+const GaugeMeter = ({ value, maxValue }) => {
   const angle = value !== null ? ((value / maxValue) * 180) - 90 : -90;
   return (
-    <div style={{ position: 'relative', width: 220, height: 110, margin: '0 auto 8px', overflow: 'hidden' }}>
-      {/* Arc background segments */}
+    <div className="gauge-meter">
       {[
         { color: '#ef5350', pct: '0deg 36deg' },
         { color: '#ff7043', pct: '36deg 72deg' },
@@ -339,46 +332,21 @@ const GaugeMeter = ({ value, maxValue, color }) => {
         { color: '#8bc34a', pct: '108deg 144deg' },
         { color: '#4caf50', pct: '144deg 180deg' },
       ].map((seg, i) => (
-        <div key={i} style={{
-          position: 'absolute', top: 0, left: 0,
-          width: 220, height: 220, borderRadius: '50%',
+        <div key={i} className="gauge-meter-arc" style={{
           background: `conic-gradient(from 270deg, ${seg.color} ${seg.pct}, transparent ${seg.pct.split(' ')[1]} 360deg)`,
-          clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0 50%)',
         }} />
       ))}
-      {/* Inner circle cutout */}
-      <div style={{
-        position: 'absolute', top: 22, left: 22,
-        width: 176, height: 176, borderRadius: '50%',
-        background: 'var(--bg-card)',
-      }} />
-      {/* Needle */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: '50%',
-        width: 3, height: 88,
-        background: 'white',
-        transformOrigin: 'bottom center',
-        transform: `translateX(-50%) rotate(${angle}deg)`,
-        transition: 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        borderRadius: '3px 3px 0 0',
-      }}>
-        <div style={{
-          position: 'absolute', bottom: -6, left: '50%', transform: 'translateX(-50%)',
-          width: 14, height: 14, borderRadius: '50%',
-          background: 'white',
-          boxShadow: '0 0 8px rgba(255,255,255,0.5)',
-        }} />
+      <div className="gauge-meter-inner" />
+      <div
+        className="gauge-meter-needle"
+        style={{
+          transform: `translateX(-50%) rotate(${angle}deg)`,
+        }}
+      >
+        <div className="gauge-meter-hub" />
       </div>
-      {/* Center label */}
       {value !== null && (
-        <div style={{
-          position: 'absolute', bottom: -4, left: '50%', transform: 'translateX(-50%)',
-          color: 'var(--gold)', fontFamily: 'var(--font-display)',
-          fontWeight: 700, fontSize: '1.1rem',
-          textShadow: '0 0 10px rgba(255,193,7,0.5)',
-        }}>
-          {value}
-        </div>
+        <div className="gauge-meter-label">{value}</div>
       )}
     </div>
   );
@@ -782,7 +750,7 @@ export default function SimulatePhase({ onComplete, audioEnabled }) {
       </div>
 
       {/* Station progress */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, marginBottom: 20 }}>
+      <div className="station-progress">
         {STATION_INFO.map((s, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{
@@ -810,7 +778,7 @@ export default function SimulatePhase({ onComplete, audioEnabled }) {
               </span>
             </div>
             {i < 2 && (
-              <div style={{
+              <div className="station-connector" style={{
                 width: 40, height: 2, marginBottom: 20,
                 background: i < station ? 'var(--green)' : 'rgba(255,255,255,0.15)',
                 transition: 'background 0.4s',

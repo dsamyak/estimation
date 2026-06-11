@@ -52,7 +52,7 @@ export default function App() {
   return (
     <>
       <FloatingNumbers />
-      <div className="app-container">
+      <div className={`app-container${showJourney ? ' has-journey' : ''}`}>
         {/* Audio Toggle */}
         <button className="audio-toggle-btn" onClick={toggleAudio} title={audioEnabled ? 'Mute' : 'Unmute'}>
           {audioEnabled ? '🔊' : '🔇'}
@@ -73,7 +73,7 @@ export default function App() {
               const isActive = phaseIndex === stepPhaseIndex;
               const isCompleted = phaseIndex > stepPhaseIndex;
               return (
-                <div key={i} className="journey-step-wrapper" style={{ display: 'flex', alignItems: 'center' }}>
+                <div key={i} className="journey-step-wrapper">
                   <div className={`journey-step ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}>
                     <div className="journey-step-dot">{isCompleted ? '✓' : item.icon}</div>
                     <div className="journey-step-label">{item.label}</div>

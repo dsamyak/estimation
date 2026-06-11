@@ -11,7 +11,21 @@
 // =============================================================
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { sounds, narrate, stopNarration } from '../utils/audio';
+import { sounds, stopNarration } from '../utils/audio';
+
+function useResponsiveCell(baseCell, cols, minCell = 28) {
+  const [cell, setCell] = useState(baseCell);
+  useEffect(() => {
+    const update = () => {
+      const available = Math.min(window.innerWidth - 48, cols * baseCell);
+      setCell(Math.max(minCell, Math.floor(available / cols)));
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [baseCell, cols, minCell]);
+  return cell;
+}
 
 // ─── Shared utility ──────────────────────────────────────────
 function shuffle(arr) {
@@ -130,7 +144,7 @@ const JarEstimation = ({ onComplete }) => {
   const accuracyBarWidth = Math.max(4, 100 - Math.min(errorPct, 96));
 
   return (
-    <div className="glass-card" style={{ maxWidth: 460, width: '100%', textAlign: 'center', padding: '28px 24px' }}>
+    <div className="glass-card sim-card">
       <h3 style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.3rem', marginBottom: 4 }}>
         🫙 Jar Estimation Challenge
       </h3>
@@ -141,10 +155,8 @@ const JarEstimation = ({ onComplete }) => {
       </p>
 
       {/* ── JAR VISUAL ── */}
-      <div style={{ position: 'relative', width: 180, height: 260, margin: '0 auto 20px', display: 'inline-block' }}>
-        {/* SVG glass jar outline */}
-        <svg viewBox="0 0 180 260"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 2, pointerEvents: 'none' }}>
+      <div className="jar-visual">
+        <svg viewBox="0 0 180 260">
           {/* Lid */}
           <rect x="44" y="6" width="92" height="20" rx="7"
             fill="rgba(175,185,220,0.70)" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5"/>
@@ -168,10 +180,7 @@ const JarEstimation = ({ onComplete }) => {
         </svg>
 
         {/* Objects clipped inside jar body bounds */}
-        <div style={{
-          position: 'absolute', left: '19%', top: '12%', right: '19%', bottom: '7%',
-          overflow: 'hidden', zIndex: 1,
-        }}>
+        <div className="jar-objects">
           {jar.positions.map((pos, i) => (
             <span
               key={`${jar.count}-${i}`}
@@ -211,14 +220,7 @@ const JarEstimation = ({ onComplete }) => {
             onChange={e => setEstimate(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && estimate && handleSubmit()}
             placeholder="e.g. 28"
-            style={{
-              width: 148, height: 60,
-              border: '2px solid var(--gold)', borderRadius: 12,
-              background: 'rgba(255,193,7,0.08)',
-              color: 'var(--gold)', fontFamily: 'var(--font-display)',
-              fontSize: '1.8rem', fontWeight: 700, textAlign: 'center',
-              outline: 'none', display: 'block', margin: '0 auto 16px',
-            }}
+            className="sim-estimate-input"
           />
           <button
             className="btn btn-primary"
@@ -234,14 +236,14 @@ const JarEstimation = ({ onComplete }) => {
       {/* ── REVEAL PHASE ── */}
       {phase === 'reveal' && (
         <div style={{ animation: 'bounceIn 0.5s ease' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+          <div className="sim-reveal-grid">
             <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: '12px 8px' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Your Guess</div>
-              <div style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.9rem' }}>{estimate}</div>
+              <div style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.4rem, 5vw, 1.9rem)' }}>{estimate}</div>
             </div>
             <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: '12px 8px' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>Actual Count</div>
-              <div style={{ color: 'var(--green)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.9rem' }}>{jar.count}</div>
+              <div style={{ color: 'var(--green)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.4rem, 5vw, 1.9rem)' }}>{jar.count}</div>
             </div>
           </div>
 
@@ -271,7 +273,7 @@ const JarEstimation = ({ onComplete }) => {
             }}/>
           </div>
 
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+          <div className="sim-actions">
             <button className="btn btn-outline btn-sm" onClick={handlePlayAgain}>🔄 New Jar</button>
             <button className="btn btn-primary" onClick={() => onComplete(stars)}>
               {stars > 0 ? 'Claim Stars ⭐' : 'Next Challenge →'}
@@ -341,13 +343,13 @@ const NumberLineTarget = ({ onComplete }) => {
   };
 
   return (
-    <div className="glass-card" style={{ maxWidth: 520, width: '100%', textAlign: 'center', padding: '28px 24px' }}>
+    <div className="glass-card sim-card">
       <h3 style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.3rem', marginBottom: 4 }}>
         🎯 Number Line Target Adventure
       </h3>
 
       {/* Level progress dots */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 16, marginBottom: 20 }}>
+      <div className="nl-level-dots">
         {NL_LEVELS.map((l, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
             <div style={{
@@ -369,12 +371,12 @@ const NumberLineTarget = ({ onComplete }) => {
       </div>
 
       {/* Target number display */}
-      <div style={{
+      <div className="nl-target-box" style={{
         background: 'rgba(255,193,7,0.1)', border: '1px solid rgba(255,193,7,0.3)',
-        borderRadius: 12, padding: '10px 20px', display: 'inline-block', marginBottom: 24,
+        borderRadius: 12,
       }}>
         <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Place this number on the line:</div>
-        <div style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '2.2rem', lineHeight: 1.1 }}>{target}</div>
+        <div className="nl-target-number" style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700 }}>{target}</div>
         <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>Range: {level.min} to {level.max}</div>
       </div>
 
@@ -493,7 +495,7 @@ const NumberLineTarget = ({ onComplete }) => {
 // SIMULATION 3 — 🗺️ TREASURE MAP DISTANCE ESTIMATION
 // ═══════════════════════════════════════════════════════════════
 
-const CELL     = 40;
+const BASE_CELL = 40;
 const MAP_COLS  = 9;
 const MAP_ROWS  = 6;
 const DECOR    = ['🌴', '⛰️', '🌊', '🌿', '🦜', '🐚', '🪨', '🐠'];
@@ -533,6 +535,7 @@ const generateMap = () => {
 };
 
 const TreasureMap = ({ onComplete }) => {
+  const CELL = useResponsiveCell(BASE_CELL, MAP_COLS);
   const [map, setMap]           = useState(generateMap);
   const [selected, setSelected] = useState(null);
   const [phase, setPhase]       = useState('guess'); // guess → reveal
@@ -571,7 +574,7 @@ const TreasureMap = ({ onComplete }) => {
   const py = row => row * CELL + CELL / 2;
 
   return (
-    <div className="glass-card" style={{ maxWidth: 500, width: '100%', textAlign: 'center', padding: '28px 20px' }}>
+    <div className="glass-card sim-card">
       <h3 style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.3rem', marginBottom: 4 }}>
         🗺️ Treasure Map Distance Estimation
       </h3>
@@ -582,10 +585,9 @@ const TreasureMap = ({ onComplete }) => {
       </p>
 
       {/* ── MAP GRID ── */}
+      <div className="treasure-map-wrapper">
       <div className="treasure-map-container" style={{
-        position: 'relative',
         width: MAP_COLS * CELL, height: MAP_ROWS * CELL,
-        margin: '0 auto 12px',
         background: 'linear-gradient(135deg, rgba(18,80,42,0.55), rgba(22,55,95,0.42))',
         border: '2px solid rgba(255,193,7,0.45)',
         borderRadius: 10, overflow: 'hidden',
@@ -660,6 +662,7 @@ const TreasureMap = ({ onComplete }) => {
           filter: 'drop-shadow(0 0 4px rgba(0,0,0,0.6))',
         }}>🏴‍☠️</div>
       </div>
+      </div>
 
       <p style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginBottom: 14 }}>
         📏 Each grid square = 10 steps &nbsp;|&nbsp; 🏴‍☠️ Pirate → 💎 Treasure
@@ -684,14 +687,14 @@ const TreasureMap = ({ onComplete }) => {
       {/* Reveal */}
       {phase === 'reveal' && (
         <div style={{ animation: 'bounceIn 0.5s ease' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+          <div className="sim-reveal-grid">
             <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: '10px 8px' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 1 }}>Your Estimate</div>
-              <div style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.4rem' }}>{selected} steps</div>
+              <div style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.1rem, 4vw, 1.4rem)' }}>{selected} steps</div>
             </div>
             <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 10, padding: '10px 8px' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: 1 }}>Actual Distance</div>
-              <div style={{ color: 'var(--green)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.4rem' }}>{map.roundedSteps} steps</div>
+              <div style={{ color: 'var(--green)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(1.1rem, 4vw, 1.4rem)' }}>{map.roundedSteps} steps</div>
             </div>
           </div>
 
@@ -705,7 +708,7 @@ const TreasureMap = ({ onComplete }) => {
             }}/>
           </div>
 
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+          <div className="sim-actions">
             <button className="btn btn-outline btn-sm" onClick={handlePlayAgain}>🔄 New Map</button>
             <button className="btn btn-primary" onClick={() => onComplete(stars)}>
               {stars > 0 ? 'Claim Stars ⭐' : 'Next Challenge →'}
@@ -809,12 +812,7 @@ export default function SimulationsPhase({ onComplete, audioEnabled }) {
 
       {/* Stars summary */}
       {Object.keys(simResults).length > 0 && (
-        <div style={{
-          display: 'flex', gap: 24, justifyContent: 'center', alignItems: 'center',
-          background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
-          borderRadius: 14, padding: '10px 28px', marginBottom: 16,
-          maxWidth: 480, width: '100%',
-        }}>
+        <div className="sim-stats-bar">
           <div style={{ textAlign: 'center' }}>
             <div style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.5rem', lineHeight: 1 }}>
               {totalStars} / {SIM_CONFIG.length * 3}
@@ -832,25 +830,22 @@ export default function SimulationsPhase({ onComplete, audioEnabled }) {
       )}
 
       {/* Simulation cards */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%', maxWidth: 480 }}>
+      <div className="sim-hub-list">
         {SIM_CONFIG.map((sim, idx) => {
           const result = simResults[sim.id];
           const isDone = result !== undefined;
           return (
             <button
               key={sim.id}
+              className="sim-hub-card"
               onClick={() => { sounds.click(); setActiveSimId(sim.id); }}
               style={{
                 background:   isDone ? sim.gradient : 'rgba(255,255,255,0.05)',
                 border:       `2px solid ${isDone ? sim.borderColor : 'rgba(255,255,255,0.10)'}`,
-                borderRadius: 16, padding: '18px 20px',
-                display: 'flex', alignItems: 'center', gap: 16,
-                cursor: 'pointer', textAlign: 'left', color: 'white',
-                transition: 'all 0.3s ease',
                 boxShadow:  isDone ? `0 4px 24px ${sim.glowColor}` : 'none',
               }}
             >
-              <div style={{
+              <div className="sim-hub-icon" style={{
                 width: 52, height: 52, borderRadius: 12, flexShrink: 0,
                 background: isDone ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.07)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
