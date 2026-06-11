@@ -66,37 +66,61 @@ export default function ReflectPhase({ stats, onRestart, onGoHome, audioEnabled 
 
   if (submitted) {
     return (
-      <div className="reflect-phase" style={{justifyContent: 'center', height: '100%', overflowY: 'auto', padding: '2rem'}}>
-        <div className="certificate-card" style={{animation: 'bounceIn 0.8s ease', maxWidth: '500px', width: '100%', margin: '0 auto'}}>
-          <div className="cert-badge" style={{fontSize: '4rem', marginBottom: '1rem'}}>🏆</div>
-          <h2 className="cert-title text-gold" style={{fontSize: '2.5rem', marginBottom: '0.5rem', fontFamily: 'var(--font-display)'}}>Estimation Expert</h2>
-          <p className="cert-subtitle text-secondary mb-6">You have mastered the art of smart guesses!</p>
+      <div className="reflect-phase" style={{ justifyContent: 'center', minHeight: '100vh', overflowY: 'auto' }}>
+        <div className="certificate-card" style={{ animation: 'bounceIn 0.8s ease', maxWidth: 500, width: '100%', margin: '0 auto' }}>
+          <div className="cert-badge" style={{ fontSize: '4rem', marginBottom: 16 }}>🏆</div>
+          <h2 className="cert-title" style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(1.8rem, 5vw, 2.5rem)',
+            fontWeight: 800,
+            color: 'var(--gold)',
+            marginBottom: 8,
+            textShadow: '0 3px 8px rgba(0,0,0,0.6)'
+          }}>
+            Estimation Expert
+          </h2>
+          <p className="cert-subtitle" style={{ color: 'var(--text-secondary)', marginBottom: 24 }}>
+            You have mastered the art of smart guesses!
+          </p>
 
-          <div className="cert-stats" style={{display: 'flex', justifyContent: 'space-around', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem'}}>
-            <div className="cert-stat text-center">
-              <div className="cert-stat-value text-gold text-2xl font-bold">{displayStats.xp}</div>
-              <div className="cert-stat-label text-sm text-secondary uppercase tracking-wider">XP</div>
+          <div className="cert-stats" style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            background: 'rgba(0,0,0,0.2)',
+            padding: 16,
+            borderRadius: 12,
+            marginBottom: 24
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 800, color: 'var(--gold)' }}>{displayStats.xp}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: 4 }}>XP</div>
             </div>
-            <div className="cert-stat text-center">
-              <div className="cert-stat-value text-green text-2xl font-bold">{displayStats.totalStars}</div>
-              <div className="cert-stat-label text-sm text-secondary uppercase tracking-wider">Stars</div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 800, color: 'var(--green)' }}>{displayStats.totalStars}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: 4 }}>Stars</div>
             </div>
-            <div className="cert-stat text-center">
-              <div className="cert-stat-value text-coral text-2xl font-bold">{displayStats.bestStreak}</div>
-              <div className="cert-stat-label text-sm text-secondary uppercase tracking-wider">Streak</div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 800, color: 'var(--coral)' }}>{displayStats.bestStreak}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: 4 }}>Streak</div>
             </div>
           </div>
 
-          <div className="cert-worlds text-left mb-6" style={{background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px'}}>
-            <div className="font-bold mb-3 text-gold">Badges Unlocked:</div>
+          <div style={{
+            background: 'rgba(255,255,255,0.05)',
+            padding: 16,
+            borderRadius: 12,
+            marginBottom: 24,
+            textAlign: 'left'
+          }}>
+            <div style={{ fontWeight: 800, marginBottom: 12, color: 'var(--gold)', fontFamily: 'var(--font-display)' }}>Badges Unlocked:</div>
             {displayStats.badges.length > 0 ? displayStats.badges.map(b => (
-              <div key={b} className="cert-world-item mb-2 flex items-center gap-2">
-                <span className="text-xl">🏅</span> <span className="text-white">{b}</span>
+              <div key={b} className="cert-world-item" style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: '1.2rem' }}>🏅</span> <span style={{ color: 'white', fontWeight: 700 }}>{b}</span>
               </div>
-            )) : <div className="text-muted text-sm italic">Keep playing to earn badges!</div>}
+            )) : <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontStyle: 'italic' }}>Keep playing to earn badges!</div>}
           </div>
 
-          <div className="flex gap-4 justify-center">
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <button className="btn btn-secondary" onClick={onRestart}>Play Again</button>
             <button className="btn btn-primary" onClick={onGoHome}>Go to Home</button>
           </div>
@@ -106,35 +130,62 @@ export default function ReflectPhase({ stats, onRestart, onGoHome, audioEnabled 
   }
 
   return (
-    <div className="reflect-phase" style={{justifyContent: 'center', height: '100%', overflowY: 'auto', padding: '2rem'}}>
-      <div className="reflect-header text-center mb-8">
-        <h2 className="reflect-label text-gold text-3xl font-bold font-display tracking-wide uppercase">Reflection Time</h2>
+    <div className="reflect-phase" style={{ justifyContent: 'center', minHeight: '100vh', overflowY: 'auto' }}>
+      <div className="reflect-header" style={{ textAlign: 'center', marginBottom: 32 }}>
+        <h2 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(1.6rem, 4vw, 2.2rem)',
+          fontWeight: 800,
+          color: 'var(--gold)',
+          textTransform: 'uppercase',
+          letterSpacing: '2px',
+          textShadow: '0 3px 8px rgba(0,0,0,0.6)'
+        }}>
+          📓 Reflection Time
+        </h2>
       </div>
 
-      <div className="reflect-card glass-card max-w-2xl w-full mx-auto p-8" style={{animation: 'bounceIn 0.5s ease'}}>
-        <div className="reflect-mascot-row flex items-center gap-6 mb-6">
-          <div className="mascot thinking" style={{fontSize: '3rem'}}>⚡</div>
-          <div className="speech-bubble" style={{fontSize: '1.2rem', padding: '1.5rem', lineHeight: 1.5}}>
+      <div className="reflect-card glass-card" style={{ maxWidth: 600, width: '100%', margin: '0 auto', padding: 32, animation: 'bounceIn 0.5s ease' }}>
+        <div className="reflect-mascot-row" style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 24 }}>
+          <div className="mascot thinking" style={{ fontSize: '2.5rem', flexShrink: 0 }}>⚡</div>
+          <div className="speech-bubble" style={{ fontSize: '1.1rem', fontWeight: 700, padding: 20, lineHeight: 1.6, color: '#1a1a2e', maxWidth: 360 }}>
             Think of a time in real life when you might need to make an estimate instead of finding the exact answer.<br/><br/>
             (For example: buying groceries, planning a trip, or sharing treats!)
           </div>
         </div>
 
         <textarea 
-          className="w-full mt-4 p-4 rounded-xl text-gray-900 bg-white border-2 border-transparent focus:border-gold outline-none transition-colors"
           rows="5"
           placeholder="I would use estimation when..."
           value={journalEntry}
           onChange={(e) => setJournalEntry(e.target.value)}
-          style={{fontFamily: 'var(--font-body)', fontSize: '1.1rem', resize: 'vertical'}}
+          style={{
+            width: '100%',
+            marginTop: 16,
+            padding: 16,
+            borderRadius: 16,
+            color: '#1a1a2e',
+            background: 'white',
+            border: '2px solid rgba(255,193,7,0.3)',
+            outline: 'none',
+            fontFamily: 'var(--font-body)',
+            fontSize: '1.1rem',
+            fontWeight: 600,
+            resize: 'vertical',
+            textShadow: 'none'
+          }}
         />
 
-        <div className="text-center mt-8">
+        <div style={{ textAlign: 'center', marginTop: 32 }}>
           <button 
-            className="btn btn-primary btn-lg px-12" 
+            className="btn btn-primary btn-lg" 
             disabled={journalEntry.trim().length < 5}
             onClick={handleSubmit}
-            style={{fontSize: '1.2rem'}}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 800,
+              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)'
+            }}
           >
             Submit & Claim Badge 🏆
           </button>

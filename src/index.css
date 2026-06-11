@@ -380,6 +380,19 @@ input.blank-input::-webkit-inner-spin-button { -webkit-appearance: none; margin:
 @keyframes groupCirclePop { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .story-card { flex-direction: column; max-width: 600px; }
+  .story-image-section { width: 100%; height: 280px; min-height: auto; }
+  .story-image { position: relative; }
+  .story-image-overlay { top: auto; bottom: 0; right: 0; width: 100%; height: 60px; background: linear-gradient(transparent, rgba(30,30,100,0.9)); }
+  .story-text-section { padding: 28px 24px; }
+  .story-progress, .story-nav { max-width: 600px; }
+  .wonder-content { max-width: 520px; padding: 0 16px; }
+}
+
+/* Mobile landscape / small tablets */
 @media (max-width: 768px) {
   html, body, #root { font-size: 16px; }
   .glass-card { padding: 24px 20px; }
@@ -390,45 +403,74 @@ input.blank-input::-webkit-inner-spin-button { -webkit-appearance: none; margin:
   .journey-bar { padding: 8px 12px; }
   .journey-step-label { display: none; }
   .journey-connector { width: 12px; }
-  .story-card { flex-direction: column; }
-  .story-image-section { width: 100%; height: 240px; min-height: auto; }
-  .story-image { position: relative; }
-  .story-image-overlay { top: auto; bottom: 0; right: 0; width: 100%; height: 60px; background: linear-gradient(transparent, rgba(30,30,100,0.9)); }
-  .story-text-section { padding: 24px 24px; }
   .intro-journey-steps { flex-direction: column; gap: 8px; }
   .intro-journey-arrow { transform: rotate(90deg); }
   .wonder-qmark { width: 90px; height: 90px; }
   .wonder-qmark-icon { font-size: 3rem; }
   .wonder-question-text { font-size: 1.2rem; }
+  .wonder-content { gap: 18px; }
+  .wonder-question-card { padding: 24px 20px; }
   .cert-stats { grid-template-columns: 1fr; gap: 8px; }
   .sentence-row { font-size: 1.8rem; gap: 8px; }
   .blank-input { width: 55px; height: 55px; font-size: 1.8rem; }
   .arrangement-grid { grid-template-columns: 1fr; }
   .group-circle { width: 80px; height: 80px; }
   .app-container { padding: 0 12px; }
-  .story-phase, .simulate-phase, .play-phase, .reflect-phase, .wonder-phase { padding: 70px 16px 40px; }
+  .story-phase, .simulate-phase, .play-phase, .reflect-phase, .wonder-phase { padding: 70px 16px 32px; }
+  .world-map { max-width: 100%; }
+  .world-card { padding: 18px 16px; }
+  .mascot-container { gap: 12px; }
+  .speech-bubble { max-width: 200px; font-size: 0.9rem; padding: 10px 14px; }
+  .reflect-card { padding: 24px 16px; }
+  .certificate-card { padding: 28px 16px; }
+  .feedback-content { padding: 28px 20px; max-width: 340px; }
+  .feedback-content .feedback-emoji { font-size: 3rem; }
+  .feedback-content .feedback-message { font-size: 1.2rem; }
+  .question-card { padding: 24px 16px; }
 }
 
+/* Mobile portrait */
 @media (max-width: 480px) {
   html, body, #root { font-size: 14px; }
-  .glass-card { padding: 16px; border-radius: var(--radius-md); }
-  .hud { padding: 8px; flex-direction: column; gap: 8px; align-items: center; }
-  .hud-item { padding: 6px 12px; font-size: 0.9rem; }
-  .mascot { width: 60px; height: 60px; font-size: 1.6rem; }
-  .reflect-card { padding: 20px 16px; }
-  .certificate-card { padding: 24px 16px; }
-  .btn { min-width: 120px; padding: 14px 24px; font-size: 1rem; }
-  .story-title { font-size: 1.2rem; }
-  .wonder-question-card { padding: 24px 16px; }
-  .cert-title { font-size: 1.5rem; }
-  .gauge-container { transform: scale(0.85); transform-origin: center; margin-bottom: 0; }
-  .score-circle { width: 120px; height: 120px; border-width: 4px; }
-  .score-circle .score-number { font-size: 2.2rem; }
-  .intro-title { font-size: 2.2rem; }
-  .play-title { font-size: 1.4rem; }
-  .sentence-row { font-size: 1.5rem; }
-  .blank-input { width: 45px; height: 45px; font-size: 1.4rem; }
+  .glass-card { padding: 16px 12px; border-radius: var(--radius-md); }
+  .hud { padding: 8px 4px; gap: 6px; }
+  .hud-item { padding: 5px 10px; font-size: 0.85rem; }
+  .mascot { width: 56px; height: 56px; font-size: 1.4rem; }
+  .speech-bubble { max-width: 180px; font-size: 0.85rem; padding: 8px 12px; }
+  .btn { min-width: 100px; padding: 12px 20px; font-size: 0.95rem; }
+  .btn-lg { padding: 14px 28px; font-size: 1rem; }
+  .wonder-qmark { width: 72px; height: 72px; }
+  .wonder-qmark-icon { font-size: 2.5rem; }
+  .wonder-question-card { padding: 20px 14px; }
+  .wonder-content { gap: 14px; max-width: 100%; }
+  .wonder-emoji { font-size: 2.2rem; margin-bottom: 8px; }
+  .story-title { font-size: 1.1rem; }
+  .story-text { font-size: 0.9rem; }
+  .story-image-section { height: 200px; }
+  .story-text-section { padding: 20px 16px; }
+  .cert-title { font-size: 1.4rem; }
+  .gauge-container { transform: scale(0.8); transform-origin: center; margin-bottom: -8px; }
+  .score-circle { width: 110px; height: 110px; border-width: 4px; }
+  .score-circle .score-number { font-size: 2rem; }
+  .intro-title { font-size: 2rem; }
+  .play-title { font-size: 1.3rem; }
+  .sentence-row { font-size: 1.5rem; gap: 6px; }
+  .blank-input { width: 45px; height: 45px; font-size: 1.3rem; }
+  .number-pad { max-width: 180px; gap: 6px; }
+  .num-pad-btn { padding: 10px; font-size: 1.1rem; }
   .treasure-map-container { transform: scale(0.75); transform-origin: center top; margin-bottom: -20px !important; }
+  .option-btn { padding: 12px; font-size: 1rem; min-height: 48px; }
+  .world-card { padding: 16px 12px; gap: 6px; }
+  .world-icon { font-size: 2rem; }
+  .world-name { font-size: 1rem; }
+  .intro-journey-map { padding: 16px; }
+  .feature-card { padding: 14px 20px; min-width: 100px; }
+  .feature-card-icon { font-size: 1.6rem; }
+  .feature-card-label { font-size: 0.8rem; }
+  .confidence-btn { padding: 14px 16px; font-size: 0.9rem; gap: 12px; }
+  .confidence-emoji { font-size: 1.6rem; }
+  .reflect-option { padding: 12px 14px; font-size: 0.9rem; gap: 8px; }
+  .reflect-option-emoji { font-size: 1.1rem; }
 }
 /* ===== STATION B: ESTIMATE-O-METER ===== */
 .gauge-container { position: relative; width: 300px; height: 150px; overflow: hidden; margin: 0 auto 24px; }
