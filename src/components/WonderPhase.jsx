@@ -73,7 +73,7 @@ export default function WonderPhase({ onComplete, audioEnabled }) {
         {/* Mascot reaction */}
         <div className={`mascot-container wonder-mascot ${step >= 1 ? 'visible' : ''}`}>
           <div className="mascot thinking" style={{ width: 60, height: 60, fontSize: '1.8rem' }}>🤔</div>
-          <div className="speech-bubble wonder-bubble">
+          <div className="speech-bubble wonder-bubble text-md text-bold text-blue-deep">
             Look at this scenario! Can you guess the answer?
           </div>
         </div>
@@ -81,38 +81,38 @@ export default function WonderPhase({ onComplete, audioEnabled }) {
         {/* Question Card */}
         <div className={`wonder-question-card ${step >= 1 ? 'visible' : ''}`}>
           <div className="wonder-emoji">📚</div>
-          <h2 className="wonder-question-text">
+          <h2 className="wonder-question-text text-display text-xl high-contrast-text">
             Sarah has 247 coins. A book costs 189 coins.<br/>
             Does she have enough?
           </h2>
-          <p className="wonder-subtext mb-4">
+          <p className="wonder-subtext text-lg text-bold text-white mb-4" style={{lineHeight: 1.5}}>
             "About 250 minus about 190... that's about 60! Yes!"
           </p>
 
-          <div className="wonder-question-text" style={{fontSize: '1.2rem', marginTop: '16px'}}>
+          <div className="wonder-question-text text-display text-xl high-contrast-text text-gold" style={{marginTop: '16px'}}>
             Is 247 close to 250?
           </div>
 
           {step < 2 ? (
             <div className="options-grid mt-4">
-              <button className="option-btn" onClick={() => handleAnswer(true)}>
+              <button className="option-btn text-display text-xl high-contrast-text" onClick={() => handleAnswer(true)}>
                 Yes!
               </button>
-              <button className="option-btn" onClick={() => handleAnswer(false)}>
+              <button className="option-btn text-display text-xl high-contrast-text" onClick={() => handleAnswer(false)}>
                 No
               </button>
             </div>
           ) : (
             <div className="mt-4" style={{ animation: 'bounceIn 0.5s ease' }}>
-              <div className="text-green font-bold text-xl mb-2">You're already thinking like an estimator!</div>
-              <p className="text-secondary">Let's learn how to make smart guesses.</p>
+              <div className="text-green text-display text-xl mb-2 high-contrast-text">You're already thinking like an estimator!</div>
+              <p className="text-lg text-bold text-white">Let's learn how to make smart guesses.</p>
             </div>
           )}
         </div>
 
         {/* Proceed Button */}
         <button 
-          className={`btn btn-wonder ${step === 2 ? 'visible' : ''}`}
+          className={`btn btn-wonder text-display text-xl high-contrast-text ${step === 2 ? 'visible' : ''}`}
           onClick={handleNext}
         >
           <span className="wonder-btn-sparkle" style={{ position: 'absolute', top: 10, left: 20 }}>✨</span>

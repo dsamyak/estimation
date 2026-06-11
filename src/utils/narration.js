@@ -97,3 +97,28 @@ export const reflectNarration = () => [
   ask("Before you get your badge, tell me... when might YOU use estimation in real life?"),
   say("Think about it and write your answer below!")
 ];
+
+export const simulationsHubNarration = () => [
+  cheer("Welcome to Estimation Simulations!"),
+  say("You have three fun challenges to try."),
+  instruct("First, estimate how many objects are in a jar. Then find numbers on a number line. Finally, help a pirate reach hidden treasure!"),
+  cheer("Try them all to earn stars!")
+];
+
+export const jarEstimationNarration = () => [
+  instruct("Look carefully at the jar and count the objects inside."),
+  say("Try to spot groups or patterns to help you estimate."),
+  ask("When you are ready, enter your best guess!")
+];
+
+export const numberLineTargetNarration = () => [
+  say("A number line helps us see where numbers live between other numbers."),
+  instruct("Drag the slider until the marker is exactly where your target number should be."),
+  cheer("There are three levels, each with a bigger range!")
+];
+
+export const treasureMapNarration = () => [
+  say("A pirate needs your help! Use the grid to estimate the distance to the treasure."),
+  instruct("Remember, each square on the map equals ten steps."),
+  ask("Which answer is closest to the real distance?")
+];

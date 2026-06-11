@@ -149,19 +149,19 @@ export default function StoryPhase({ onComplete, audioEnabled }) {
         </div>
 
         <div className="story-text-section">
-          <h3 className="story-title">{panel.title}</h3>
+          <h3 className="story-title text-display text-xl high-contrast-text text-gold">{panel.title}</h3>
           
-          <div className={`story-text ${animState === 'idle' ? 'revealed' : ''}`} style={{ whiteSpace: 'pre-wrap' }}>
+          <div className={`story-text text-lg text-bold text-white ${animState === 'idle' ? 'revealed' : ''}`} style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
             {panel.text}
           </div>
 
           <div className={`story-highlight ${animState === 'idle' ? 'visible' : ''}`}>
-            <span className="story-highlight-text">{panel.highlight}</span>
+            <span className="story-highlight-text text-display text-xl text-black text-gold">{panel.highlight}</span>
           </div>
 
           <div className={`story-mascot ${animState === 'idle' ? 'visible' : ''}`} style={{ opacity: animState === 'idle' ? 1 : 0, transition: 'opacity 0.5s ease 0.8s' }}>
-            <div className="mascot happy" style={{ width: 40, height: 40, fontSize: '1.2rem' }}>⚡</div>
-            <div className="speech-bubble" style={{ padding: '8px 12px', fontSize: '0.85rem' }}>
+            <div className="mascot happy" style={{ width: 50, height: 50, fontSize: '1.5rem' }}>⚡</div>
+            <div className="speech-bubble text-md text-bold" style={{ padding: '12px 16px', color: 'var(--blue-deep)' }}>
               {panel.mascotMsg}
             </div>
           </div>

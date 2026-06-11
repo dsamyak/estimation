@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-audio": "node scripts/generate_audio.js",
+    "clean-audio": "node scripts/clean_audio.js"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

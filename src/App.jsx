@@ -4,15 +4,15 @@ import FloatingNumbers from './components/FloatingNumbers';
 import IntroScreen from './components/IntroScreen';
 import WonderPhase from './components/WonderPhase';
 import StoryPhase from './components/StoryPhase';
-import SimulatePhase from './components/SimulatePhase';
+import SimulationsPhase from './components/SimulationsPhase';
 import PlayPhase from './components/PlayPhase';
 import ReflectPhase from './components/ReflectPhase';
 
-const PHASES = ['intro', 'wonder', 'story', 'simulate', 'play', 'reflect'];
+const PHASES = ['intro', 'wonder', 'story', 'simulations', 'play', 'reflect'];
 const JOURNEY_ITEMS = [
   { icon: '🔍', label: 'Wonder' },
   { icon: '📖', label: 'Story' },
-  { icon: '🧪', label: 'Simulate' },
+  { icon: '🔬', label: 'Simulations' },
   { icon: '🎮', label: 'Play' },
   { icon: '📓', label: 'Reflect' },
 ];
@@ -105,13 +105,13 @@ export default function App() {
 
         {phase === 'story' && (
           <StoryPhase
-            onComplete={() => setPhase('simulate')}
+            onComplete={() => setPhase('simulations')}
             audioEnabled={audioEnabled}
           />
         )}
 
-        {phase === 'simulate' && (
-          <SimulatePhase
+        {phase === 'simulations' && (
+          <SimulationsPhase
             onComplete={() => setPhase('play')}
             audioEnabled={audioEnabled}
           />
