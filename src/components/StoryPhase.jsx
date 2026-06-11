@@ -69,24 +69,27 @@ export default function StoryPhase({ onComplete, audioEnabled }) {
 
   const panel = STORY_PANELS[panelIdx];
 
-  // Animation and narration sequencer
+  // Animation sequencer
   useEffect(() => {
-    let t1, t2;
     if (animState === 'entering') {
-      t1 = setTimeout(() => setAnimState('idle'), 600);
-      
-      if (audioEnabled) {
-        narrationRef.current?.cancel();
-        t2 = setTimeout(() => {
-          narrationRef.current = narrate(panel.narration(), true);
-        }, 800);
-      }
+      const t1 = setTimeout(() => setAnimState('idle'), 600);
+      return () => clearTimeout(t1);
     }
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [panelIdx, animState, audioEnabled, panel]);
+  }, [animState]);
+
+  // Narration sequencer
+  useEffect(() => {
+    if (audioEnabled && animState === 'entering') {
+      narrationRef.current?.cancel();
+      const t2 = setTimeout(() => {
+        narrationRef.current = narrate(panel.narration(), true);
+      }, 800);
+      return () => {
+        clearTimeout(t2);
+        narrationRef.current?.cancel();
+      };
+    }
+  }, [panelIdx, audioEnabled]);
 
   const handleNext = () => {
     sounds.click();
